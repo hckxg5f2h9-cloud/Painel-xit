@@ -2,253 +2,145 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>RGB DARK PANEL | FF INSPIRED</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Painel Elite V3</title>
     <style>
-        :root {
-            --bg-dark: #050505;
-            --neon-red: #ff003c;
-            --neon-purple: #9d00ff;
-            --neon-blue: #00f2ff;
-            --rgb-gradient: linear-gradient(45deg, #ff003c, #9d00ff, #00f2ff, #00ff40);
-        }
+        :root { --primary: #ff003c; --secondary: #00f2ff; --bg: #050505; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background: var(--bg); color: white; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+        
+        /* Cabeçalho */
+        header { padding: 20px; text-align: center; border-bottom: 1px solid #222; }
+        h2 { color: var(--primary); font-size: 18px; text-transform: uppercase; letter-spacing: 2px; }
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-dark);
-            color: white;
-            overflow: hidden;
-            height: 100vh;
-        }
-
-        /* Animação de Fundo RGB */
-        .bg-lines {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, transparent, rgba(157, 0, 255, 0.05));
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        /* --- TELA DE LOGIN --- */
-        #login-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            transition: transform 0.5s cubic-bezier(0.7, 0, 0.3, 1);
-        }
-
-        .login-card {
-            background: rgba(10, 10, 10, 0.9);
-            padding: 40px;
+        /* Área de Teste da Mira (Onde o código do enginebundle atua) */
+        #touch-area {
+            flex-grow: 1;
+            margin: 15px;
+            border: 2px dashed #333;
             border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 20px rgba(157, 0, 255, 0.2);
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .logo-neon {
-            font-size: 3rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            background: var(--rgb-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(157, 0, 255, 0.8));
-            animation: pulse 2s infinite;
-        }
-
-        .input-group {
-            margin: 20px 0;
-            position: relative;
-        }
-
-        input {
-            background: #111;
-            border: 2px solid transparent;
-            border-bottom: 2px solid var(--neon-blue);
-            padding: 12px;
-            width: 250px;
-            color: white;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        input:focus {
-            border: 2px solid var(--neon-purple);
-            box-shadow: 0 0 15px var(--neon-purple);
-        }
-
-        .btn-login {
-            background: var(--rgb-gradient);
-            background-size: 300% 300%;
-            border: none;
-            padding: 15px 50px;
-            color: white;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            border-radius: 5px;
-            box-shadow: 0 0 20px rgba(255, 0, 60, 0.5);
-            animation: gradientMove 3s infinite alternate;
-        }
-
-        /* --- PAINEL PRINCIPAL (Oculto Inicialmente) --- */
-        #main-panel {
-            display: none;
-            padding: 20px;
-        }
-
-        .top-bar {
             display: flex;
-            justify-content: space-between;
-            padding: 15px;
-            border-bottom: 1px solid var(--neon-red);
-            margin-bottom: 30px;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(circle, rgba(255,0,60,0.05) 0%, transparent 70%);
+        }
+        #aim-pointer {
+            width: 10px; height: 10px;
+            background: var(--secondary);
+            border-radius: 50%;
+            position: absolute;
+            box-shadow: 0 0 15px var(--secondary);
+            pointer-events: none;
         }
 
-        .status-online {
-            color: #00ff40;
-            text-shadow: 0 0 10px #00ff40;
-            font-weight: bold;
-        }
-
-        .grid-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .card-option {
-            background: #111;
-            border-left: 5px solid var(--neon-red);
-            padding: 20px;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-
-        .card-option:hover {
-            transform: scale(1.02);
-            background: #1a1a1a;
-        }
-
-        /* Sliders Customizados */
-        input[type=range] {
-            width: 100%;
-            accent-color: var(--neon-red);
-        }
-
-        /* ANIMAÇÕES */
-        @keyframes pulse {
-            0% { transform: scale(1); filter: brightness(1); }
-            50% { transform: scale(1.05); filter: brightness(1.3); }
-            100% { transform: scale(1); filter: brightness(1); }
-        }
-
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-
-        .glitch-effect {
-            animation: glitch 0.2s linear;
-        }
-
-        @keyframes glitch {
-            0% { transform: translate(2px, 2px); }
-            25% { transform: translate(-2px, -2px); }
-            50% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-
+        /* Controles */
+        .controls { padding: 20px; background: rgba(15,15,15,0.95); border-radius: 20px 20px 0 0; border-top: 1px solid #333; }
+        .card { background: #111; padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #222; }
+        label { display: block; font-size: 10px; color: #aaa; margin-bottom: 8px; }
+        label span { float: right; color: var(--primary); }
+        input[type="range"] { width: 100%; accent-color: var(--primary); }
     </style>
 </head>
 <body>
 
-    <div class="bg-lines"></div>
+<header>
+    <h2>FF ELITE ENGINE</h2>
+</header>
 
-    <section id="login-screen">
-        <div class="login-card">
-            <h1 class="logo-neon">FF ELITE</h1>
-            <div class="input-group">
-                <input type="text" placeholder="USER ID">
-            </div>
-            <div class="input-group">
-                <input type="password" placeholder="PASSWORD">
-            </div>
-            <button class="btn-login" onclick="login()">ENTRAR</button>
-            <p style="color: #555; font-size: 10px; margin-top: 15px;">LICENÇA: ATIVA (V.2.0)</p>
-        </div>
-    </section>
+<div id="touch-area">
+    <div id="aim-pointer"></div>
+    <p style="color: #444; font-size: 12px;">DESLIZE AQUI PARA TESTAR A MIRA</p>
+</div>
 
-    <section id="main-panel">
-        <div class="top-bar">
-            <div>PLAYER: <span style="color: var(--neon-blue);">ANGELIC_FF</span></div>
-            <div class="status-online">🟢 ONLINE</div>
-            <button onclick="location.reload()" style="background:none; border: 1px solid red; color: red; cursor:pointer;">SAIR</button>
-        </div>
+<div class="controls">
+    <div class="card">
+        <label>VELOCIDADE MÁXIMA (CLAMP): <span id="valMaxVel">25</span></label>
+        <input type="range" min="10" max="100" value="25" id="sliderMaxVel" oninput="updateEngine()">
+        
+        <label style="margin-top:15px;">PRECISÃO (THRESHOLD): <span id="valPrec">2.5</span></label>
+        <input type="range" min="1" max="10" step="0.5" value="2.5" id="sliderPrec" oninput="updateEngine()">
+    </div>
+    
+    <p id="status-sw" style="font-size: 9px; text-align: center; color: #444;">OFFLINE READY: PENDING</p>
+</div>
 
-        <div class="grid-options">
-            <div class="card-option">
-                <h3>🔫 NO RECOIL</h3>
-                <input type="range" min="0" max="100" value="50">
-                <div style="display:flex; justify-content: space-between; font-size: 12px; margin-top: 5px;">
-                    <span>LOW</span><span>MID</span><span>MAX</span>
-                </div>
-            </div>
+<script>
+// --- 1. LÓGICA DO ENGINE (engine.js) ---
+const aimEngine = {
+    maxVelocity: 25,
+    precisionThreshold: 2.5,
+    ALPHA: 0.25,
+    filteredDelta: 0,
+    
+    cubicBezier: function(t) {
+        const p1 = 0.15, p2 = 0.85;
+        return 3*(1-t)*t**2*p2 + t**3;
+    },
+    processDelta: function(rawDelta) {
+        const abs = Math.abs(rawDelta);
+        const sign = Math.sign(rawDelta);
+        const normalized = Math.min(abs / this.maxVelocity, 1);
+        const curve = abs < this.precisionThreshold ? normalized : this.cubicBezier(normalized);
+        return sign * curve * this.maxVelocity;
+    }
+};
 
-            <div class="card-option" style="border-left-color: var(--neon-red);">
-                <h3>🔴 RED TRICK</h3>
-                <label class="switch">
-                    <input type="checkbox" id="red-trick-toggle" onchange="toggleRed()">
-                    <span style="font-size: 14px;">ATIVAR MODO AGRESSIVO</span>
-                </label>
-                <div id="status-red" style="margin-top:10px; color: #444;">STATUS: OFF</div>
-            </div>
+// --- 2. LÓGICA DE INPUT E FILTRO (enginebundle.js) ---
+let lastTouchX = null;
+let pendingDelta = 0;
+let pointerX = window.innerWidth / 2;
 
-            <div class="card-option" style="border-left-color: var(--neon-blue);">
-                <h3>⚡ SENSI OP</h3>
-                <select style="background:#222; color:white; border:none; padding:10px; width:100%;">
-                    <option>Sensi Controlada</option>
-                    <option>Sensi Rush</option>
-                    <option>Sensi Insana</option>
-                </select>
-                <p style="font-size: 11px; color: var(--neon-blue); margin-top:10px;">MOUSE DPI: 1600 (SYNCED)</p>
-            </div>
-        </div>
-    </section>
+function lowPassFilter(input) {
+    aimEngine.filteredDelta = aimEngine.filteredDelta + aimEngine.ALPHA * (input - aimEngine.filteredDelta);
+    return aimEngine.filteredDelta;
+}
 
-    <script>
-        function login() {
-            const btn = document.querySelector('.btn-login');
-            btn.classList.add('glitch-effect');
-            
-            setTimeout(() => {
-                document.getElementById('login-screen').style.transform = 'translateX(-150%)';
-                setTimeout(() => {
-                    document.getElementById('login-screen').style.display = 'none';
-                    document.getElementById('main-panel').style.display = 'block';
-                }, 500);
-            }, 300);
-        }
+const touchArea = document.getElementById('touch-area');
+const pointer = document.getElementById('aim-pointer');
 
-        function toggleRed() {
-            const status = document.getElementById('status-red');
-            const isChecked = document.getElementById('red-trick-toggle').checked;
-            if(isChecked) {
-                status.innerText = 'STATUS: ON (PULSING)';
-                status.style.color = '#ff003c';
-                status.style.textShadow = '0 0 10px #ff003c';
-            } else {
-                status.innerText = 'STATUS: OFF';
-                status.style.color = '#444';
-                status.style.textShadow = 'none';
-            }
-        }
-    </script>
+touchArea.addEventListener('touchmove', (e) => {
+    const touch = e.touches[0];
+    if (lastTouchX === null) {
+        lastTouchX = touch.clientX;
+        return;
+    }
+    const dx = touch.clientX - lastTouchX;
+    lastTouchX = touch.clientX;
+    
+    // Processamento com Filtro e Bézier
+    const filtered = lowPassFilter(dx);
+    const finalDelta = aimEngine.processDelta(filtered);
+    
+    // Move o ponteiro visualmente
+    pointerX += finalDelta;
+    pointer.style.left = pointerX + 'px';
+}, { passive: true });
+
+touchArea.addEventListener('touchend', () => {
+    lastTouchX = null;
+    aimEngine.filteredDelta = 0;
+});
+
+// --- 3. ATUALIZAÇÃO DOS SLIDERS ---
+function updateEngine() {
+    aimEngine.maxVelocity = parseFloat(document.getElementById('sliderMaxVel').value);
+    aimEngine.precisionThreshold = parseFloat(document.getElementById('sliderPrec').value);
+    document.getElementById('valMaxVel').innerText = aimEngine.maxVelocity;
+    document.getElementById('valPrec').innerText = aimEngine.precisionThreshold;
+}
+
+// --- 4. REGISTRO DO SERVICE WORKER (service-worker.js) ---
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js').then(() => {
+            document.getElementById('status-sw').innerText = 'OFFLINE READY: ACTIVE';
+            document.getElementById('status-sw').style.color = '#00f2ff';
+        });
+    });
+}
+</script>
+
 </body>
 </html>
