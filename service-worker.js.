@@ -1,0 +1,18 @@
+self.addEventListener('install', e => self.skipWaiting());
+self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
+
+const CORE_ASSETS = ['/engine.js', '/enginebundle.js'];
+
+self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+  if (CORE_ASSETS.includes(url.pathname)) {
+    event.respondWith(
+      caches.open('core').then(cache => {
+        return fetch(event.request).then(res => {
+          cache.put(event.request, res.clone());
+          return res;
+        }).catch(() => caches.match(event.request));
+      })
+    );
+  }
+});
